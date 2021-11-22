@@ -1,37 +1,37 @@
 <template>
   <div class="home">
+    <Navbar @selectCity="loadCity" />
+
     <!-- Map -->
-    <div id="map"></div>
+    <div id="map">
+      <Map :selectedCity="selectedCity" />
+    </div>
+    <!-- <BikeInfo :station="station" /> -->
   </div>
 </template>
 
 <script>
-import leaflet from "leaflet";
-import { onMounted } from "@vue/runtime-core";
+import Navbar from ".././components/Navbar.vue";
+import Map from ".././components/Map.vue";
+import getBike from ".././composables/getBike";
+import { ref } from "@vue/reactivity";
 
 export default {
   name: "Home",
+  components: { Navbar, Map },
 
   setup() {
-    let mymap;
-    onMounted(() => {
-      mymap = leaflet.map("map").setView([25.03, 121.56], 13);
-      leaflet
-        .tileLayer(
-          "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-          {
-            attribution:
-              'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: "mapbox/streets-v11",
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken:
-              "pk.eyJ1IjoicG9ueWF3ZXNvbWUiLCJhIjoiY2tscWd3djhwMHVwODJvcHM2dTJxcXByciJ9.EMsPVi7a-UV29InwyJ5m4g",
-          }
-        )
-        .addTo(mymap);
-    });
+    const { getStation, station, getAvailableBike, availableBike } = getBike();
+    getStation();
+    getAvailableBike();
+
+    const selectedCity = ref("");
+    const loadCity = (city) => {
+      selectedCity.value = city.value;
+      console.log("selectedCity.value", selectedCity.value);
+    };
+
+    return { station, availableBike, loadCity, selectedCity };
   },
 };
 </script>
@@ -39,5 +39,6 @@ export default {
 <style scoped>
 #map {
   height: 90vh;
+  z-index: 10;
 }
 </style>

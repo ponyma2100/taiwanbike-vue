@@ -24,7 +24,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Nunito', 'Noto Sans TC',sans-serif;
-  color: var(--fontprimary);
+  /* color: var(--fontprimary); */
   letter-spacing: 0.03em
 }
 body {
@@ -32,6 +32,7 @@ body {
 }
 a {
   text-decoration: none;
+  color: var(--fontprimary)
 }
 
 /* buttons */

@@ -6,16 +6,45 @@
         <router-link :to="{ name: 'Home' }">尋找Bike</router-link>
         <router-link :to="{ name: 'Guideline' }">車道查詢</router-link>
       </div>
-      <div class="search">
-        <input type="text" placeholder="輸入您想查詢的路線、景點或餐廳" />
-        <img src="../assets/search.png" alt="" />
+      <div class="select">
+        <select v-model="selected" @click="changeItem" @change="handleChange">
+          <option v-for="city in cityMapping" :key="city" :value="city.engName">
+            {{ city.chtName }}
+          </option>
+        </select>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
-export default {};
+import { ref } from "@vue/reactivity";
+import cityMapping from "../data/cityMapping";
+export default {
+  setup(props, { emit }) {
+    const selected = ref("Taipei");
+
+    // const changeItem = (selected) => {
+    //   console.log(selected);
+    //   emit("selectCity", selected);
+    //   // context.emit("selectCity", e.target.value);
+    // };
+    const changeItem = (e) => {
+      emit("selectCity", selected);
+    };
+
+    // const selecter = (e) => {
+    //   console.log("click");
+    //   // emit("selectCity", selected);
+    //   // console.log(
+    //   //   "🚀 ~ file: Navbar.vue ~ line 29 ~ select ~ selected",
+    //   //   selected
+    //   // );
+    // };
+
+    return { cityMapping, selected, changeItem };
+  },
+};
 </script>
 
 <style scoped>
@@ -29,27 +58,15 @@ nav {
   height: 80px;
   border: 1px solid black;
 }
-.search {
-  display: flex;
-  align-items: center;
+select {
   height: 30px;
-  width: 300px;
+  width: 80px;
   border-radius: 8px;
   background: #ffffff;
   border: 1px solid #022020;
   box-sizing: border-box;
-  border-radius: 8px;
 }
-.search input {
-  height: 100%;
-  border-radius: 8px;
-}
-.search img {
-  cursor: pointer;
-  width: 16.69px;
-  height: 16.69px;
-  margin-right: 5px;
-}
+
 a.router-link-active {
   background: #022020;
   color: #ffffff;
