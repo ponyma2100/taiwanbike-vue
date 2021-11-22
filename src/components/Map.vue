@@ -22,10 +22,6 @@ export default {
   components: { BikeInfo },
   props: ["selectedCity"],
   setup(props) {
-    console.log(
-      "🚀 ~ file: Map.vue ~ line 25 ~ setup ~ props",
-      props.selectedCity
-    );
     const { getStation, station, getAvailableBike, availableBike } = getBike();
     const showCard = ref(false);
     onMounted(async () => {

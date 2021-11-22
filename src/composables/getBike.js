@@ -20,7 +20,6 @@ const getBike = () => {
   const headers = getAuthorizationHeader()
 
   const getStation = async (city) => {
-    console.log("🚀 ~ file: getBike.js ~ line 23 ~ getStation ~ city", city)
     try {
       const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Bike/Station/${city}?$format=JSON`, { headers })
       const data = await response.json()

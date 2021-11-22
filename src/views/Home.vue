@@ -22,13 +22,11 @@ export default {
 
   setup() {
     const { getStation, station, getAvailableBike, availableBike } = getBike();
-    getStation();
-    getAvailableBike();
 
     const selectedCity = ref("");
     const loadCity = (city) => {
       selectedCity.value = city.value;
-      console.log("selectedCity.value", selectedCity.value);
+      // console.log("selectedCity.value", selectedCity.value);
     };
 
     return { station, availableBike, loadCity, selectedCity };
