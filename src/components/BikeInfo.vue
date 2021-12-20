@@ -47,9 +47,12 @@ export default {
   height: 171px;
   width: 320px;
   bottom: 50px;
-  left: 50%;
   border-radius: 8px;
   position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 999;
   cursor: auto;
 }

@@ -26,8 +26,6 @@ export default {
     const showCard = ref(false);
     let mymap = {};
     let markers = L.markerClusterGroup();
-    getAvailableBike(props.selectedCity);
-    getStation(props.selectedCity);
 
     onMounted(async () => {
       await getAvailableBike(props.selectedCity);
