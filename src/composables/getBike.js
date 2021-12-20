@@ -17,11 +17,11 @@ function getAuthorizationHeader() {
 const getBike = () => {
   const station = ref([])
   const availableBike = ref([])
-  const headers = getAuthorizationHeader()
 
   const getStation = async (city) => {
     try {
-      const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Bike/Station/${city}?$format=JSON`, { headers })
+      const queryCity = city ? city : 'Taipei'
+      const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Bike/Station/${queryCity}?$format=JSON`, { headers: getAuthorizationHeader() })
       const data = await response.json()
       station.value = data
 
@@ -35,7 +35,8 @@ const getBike = () => {
   const getAvailableBike = async (city) => {
 
     try {
-      const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/${city}?$format=JSON`, { headers })
+      const queryCity = city ? city : 'Taipei'
+      const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Bike/Availability/${queryCity}?$format=JSON`, { headers: getAuthorizationHeader() })
       const data = await response.json()
       availableBike.value = await data
 

@@ -23,24 +23,11 @@ import cityMapping from "../data/cityMapping";
 export default {
   setup(props, { emit }) {
     const selected = ref("Taipei");
+    emit("selectCity", selected);
 
-    // const changeItem = (selected) => {
-    //   console.log(selected);
-    //   emit("selectCity", selected);
-    //   // context.emit("selectCity", e.target.value);
-    // };
     const changeItem = (e) => {
       emit("selectCity", selected);
     };
-
-    // const selecter = (e) => {
-    //   console.log("click");
-    //   // emit("selectCity", selected);
-    //   // console.log(
-    //   //   "🚀 ~ file: Navbar.vue ~ line 29 ~ select ~ selected",
-    //   //   selected
-    //   // );
-    // };
 
     return { cityMapping, selected, changeItem };
   },

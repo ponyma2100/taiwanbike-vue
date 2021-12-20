@@ -3,9 +3,9 @@
     <Navbar @selectCity="loadCity" />
 
     <!-- Map -->
-    <div id="map">
-      <Map :selectedCity="selectedCity" />
-    </div>
+
+    <Map :selectedCity="selectedCity" />
+
     <!-- <BikeInfo :station="station" /> -->
   </div>
 </template>
@@ -23,10 +23,9 @@ export default {
   setup() {
     const { getStation, station, getAvailableBike, availableBike } = getBike();
 
-    const selectedCity = ref("");
+    const selectedCity = ref("Taipei");
     const loadCity = (city) => {
       selectedCity.value = city.value;
-      // console.log("selectedCity.value", selectedCity.value);
     };
 
     return { station, availableBike, loadCity, selectedCity };
@@ -35,8 +34,4 @@ export default {
 </script>
 
 <style scoped>
-#map {
-  height: 90vh;
-  z-index: 10;
-}
 </style>
