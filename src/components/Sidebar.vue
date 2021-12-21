@@ -1,0 +1,182 @@
+<template>
+  <div class="sidebar">
+    <div class="selector">
+      <div class="citySelector">
+        <label for="citySelect">查詢地區 : </label>
+        <select
+          v-model="selected"
+          @click="changeItem"
+          @change="handleChange"
+          id="citySelect"
+        >
+          <option
+            v-for="city in cityName"
+            :key="city.CityID"
+            :value="city.City"
+          >
+            {{ city.CityName }}
+          </option>
+        </select>
+      </div>
+      <div class="directionSelector">
+        <label for="directionSelect">方向 : </label>
+        <select id="directionSelect">
+          <option value="0">不拘</option>
+          <option value="1">單向</option>
+          <option value="2">雙向</option>
+        </select>
+      </div>
+    </div>
+    <div class="bikeroute">
+      <h4>地區內的自行車道 :</h4>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          v-for="route in bikeShape"
+          :key="route.RouteName"
+        >
+          <div class="bike-info">
+            <div class="bike-info-name">
+              <p>{{ route.RouteName }}</p>
+            </div>
+            <div class="bike-info-length">
+              <p>{{ route.CyclingLength }} M</p>
+            </div>
+            <div class="bike-info-start">
+              <span>起點</span>
+              <p>{{ route.RoadSectionStart }}</p>
+            </div>
+            <div class="bike-info-end">
+              <span>迄點</span>
+              <p>{{ route.RoadSectionEnd }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from "@vue/reactivity";
+import cityName from "../data/cityName";
+import getBike from ".././composables/getBike";
+import { watch } from "@vue/runtime-core";
+
+export default {
+  setup() {
+    const { getBikeShape, bikeShape } = getBike();
+    const selected = ref("Taipei");
+    getBikeShape(selected.value);
+
+    watch(
+      () => selected.value,
+      async () => {
+        await getBikeShape(selected.value);
+      }
+    );
+    return { cityName, selected, bikeShape };
+  },
+};
+</script>
+
+<style scopde>
+.sidebar {
+  width: 25vw;
+  height: 90vh;
+  min-width: 300px;
+  max-height: 90vh;
+  overflow-y: scroll;
+  background: #ffffff;
+  position: absolute;
+  top: 80px;
+  z-index: 999;
+}
+.selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25vw;
+  min-width: 300px;
+  height: 10vh;
+  text-align: center;
+  position: fixed;
+  background: #ffffff;
+  letter-spacing: 0.04em;
+  color: #7d7d7d;
+  border: 1px solid black;
+  z-index: 999;
+}
+.citySelector,
+.directionSelector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+.citySelector > select,
+.directionSelector > select {
+  background: #e5e5e5;
+  border-radius: 8px;
+  width: 80px;
+  color: #07b041;
+}
+ul {
+  position: absolute;
+  top: 130px;
+}
+
+ul > li {
+  width: 460px;
+  height: 122px;
+  background: #ffffff;
+}
+ul > li:hover {
+  background: #e4e4e4;
+  cursor: pointer;
+}
+
+.bikeroute > h4 {
+  position: absolute;
+  top: 100px;
+  padding: 5px 40px;
+}
+
+.list-group-item {
+  width: 20vw;
+  height: 100%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 40px;
+  text-align: start;
+  line-height: 1.5rem;
+}
+.bike-info-name {
+  color: #022020;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  margin-bottom: 5px;
+}
+.bike-info-length {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  color: #07b041;
+  margin-bottom: 5px;
+}
+
+.bike-info-start,
+.bike-info-end {
+  display: flex;
+  margin-bottom: 5px;
+  color: #07b041;
+}
+.bike-info-start > p,
+.bike-info-end > p {
+  margin-left: 5px;
+  color: #7d7d7d;
+}
+</style>
