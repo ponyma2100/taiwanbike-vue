@@ -4,7 +4,7 @@
       <div class="logo"><img src="../assets/twlogo.png" alt="" /></div>
       <div class="links">
         <router-link :to="{ name: 'Home' }">尋找Bike</router-link>
-        <router-link :to="{ name: 'Guideline' }">車道查詢</router-link>
+        <router-link :to="{ name: 'Route' }">車道查詢</router-link>
       </div>
       <div class="select">
         <select v-model="selected" @click="changeItem" @change="handleChange">
