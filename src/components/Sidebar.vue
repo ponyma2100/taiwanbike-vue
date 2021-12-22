@@ -4,7 +4,7 @@
       <div class="citySelector">
         <label for="citySelect">查詢地區 : </label>
         <select
-          v-model="selected"
+          v-model="citySelected"
           @click="changeItem"
           @change="handleChange"
           id="citySelect"
@@ -20,7 +20,11 @@
       </div>
       <div class="directionSelector">
         <label for="directionSelect">方向 : </label>
-        <select id="directionSelect">
+        <select
+          id="directionSelect"
+          v-model="directionSelected"
+          @click="changeDirection"
+        >
           <option value="0">不拘</option>
           <option value="1">單向</option>
           <option value="2">雙向</option>
@@ -32,7 +36,7 @@
       <ul class="list-group">
         <li
           class="list-group-item"
-          v-for="route in bikeShape"
+          v-for="route in filterRoute"
           :key="route.RouteName"
           @click="handlePolyLine(route)"
         >
@@ -43,6 +47,7 @@
             <div class="bike-info-length">
               <p>{{ route.CyclingLength }} M</p>
             </div>
+            {{ route.Direction }}
             <div class="bike-info-start">
               <span>起點</span>
               <p>{{ route.RoadSectionStart }}</p>
@@ -59,7 +64,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { computed, ref } from "@vue/reactivity";
 import cityName from "../data/cityName";
 import getBike from ".././composables/getBike";
 import { watch } from "@vue/runtime-core";
@@ -67,21 +72,51 @@ import { watch } from "@vue/runtime-core";
 export default {
   setup(props, { emit }) {
     const { getBikeShape, bikeShape } = getBike();
-    const selected = ref("Taipei");
-    getBikeShape(selected.value);
+    const citySelected = ref("Taipei");
+    const directionSelected = ref("0");
+
+    getBikeShape(citySelected.value);
 
     watch(
-      () => selected.value,
+      () => citySelected.value,
       async () => {
-        await getBikeShape(selected.value);
+        await getBikeShape(citySelected.value);
       }
     );
+    watch(
+      () => directionSelected.value,
+      () => {
+        console.log("directionSelected", directionSelected.value);
+      }
+    );
+
+    //  filter route direction
+    const filterRoute = computed(() => {
+      if (directionSelected.value === "0") {
+        return bikeShape.value;
+      } else if (directionSelected.value === "1") {
+        return bikeShape.value.filter((bike) =>
+          bike.Direction.includes("單向")
+        );
+      } else if (directionSelected.value === "2") {
+        return bikeShape.value.filter((bike) =>
+          bike.Direction.includes("雙向")
+        );
+      }
+    });
 
     const handlePolyLine = (data) => {
       emit("polyLine", data);
     };
 
-    return { cityName, selected, bikeShape, handlePolyLine };
+    return {
+      cityName,
+      citySelected,
+      bikeShape,
+      handlePolyLine,
+      directionSelected,
+      filterRoute,
+    };
   },
 };
 </script>

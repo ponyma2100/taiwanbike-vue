@@ -58,7 +58,11 @@ const getBike = () => {
       const response = await fetch(`https://ptx.transportdata.tw/MOTC/v2/Cycling/Shape/${queryCity}?$format=JSON`, { headers: getAuthorizationHeader() })
       const data = await response.json()
       bikeShape.value = await data
-
+      bikeShape.value.map(bike => {
+        if (!bike.Direction) {
+          bike.Direction = ''
+        }
+      })
       return { bikeShape }
 
     } catch (error) {
