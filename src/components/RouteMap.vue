@@ -1,5 +1,6 @@
 <template>
   <div id="map"></div>
+  <Sidebar @polyLine="drawPolyLine" />
 </template>
 
 <script>
@@ -9,15 +10,29 @@ import "leaflet.markercluster/dist/leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import getBike from ".././composables/getBike";
+import Sidebar from "../components/Sidebar.vue";
+import startIconUrl from "../assets/starticon.png";
+import endIconUrl from "../assets/endicon.png";
 import { onMounted } from "@vue/runtime-core";
 
 export default {
+  components: { Sidebar },
   props: ["selectedCity"],
   setup(props) {
     const { getBikeShape, bikeShape } = getBike();
     getBikeShape(props.selectedCity);
 
     let mymap = {};
+    let myLayer = null;
+    let startIcon = L.icon({
+      iconUrl: startIconUrl,
+      iconSize: [36, 36], // size of the icon
+    });
+    let endIcon = L.icon({
+      iconUrl: endIconUrl,
+      iconSize: [36, 36], // size of the icon
+    });
+
     // let markers = L.markerClusterGroup();
 
     onMounted(async () => {
@@ -39,6 +54,61 @@ export default {
         }
       ).addTo(mymap);
     });
+
+    const removePolyLine = () => {
+      if (myLayer) {
+        mymap.removeLayer(myLayer);
+      }
+    };
+
+    const drawPolyLine = (data) => {
+      removePolyLine();
+      clearMarkers();
+      bikePolyLine(data);
+    };
+
+    const bikePolyLine = (data) => {
+      // 建立一個 wkt 的實體
+      const wicket = new Wkt.Wkt();
+      const geojsonFeature = wicket.read(data.Geometry).toJson();
+
+      const position = geojsonFeature.coordinates[0];
+      const positionStart = position[0];
+      const positionEnd = position[position.length - 1];
+
+      if (geojsonFeature) {
+        L.marker([positionStart[1], positionStart[0]], {
+          icon: startIcon,
+        }).addTo(mymap);
+        L.marker([positionEnd[1], positionEnd[0]], { icon: endIcon }).addTo(
+          mymap
+        );
+      }
+
+      const myStyle = {
+        color: "#07B041",
+        weight: 5,
+        opacity: 0.65,
+      };
+      myLayer = L.geoJSON(geojsonFeature, {
+        style: myStyle,
+      }).addTo(mymap);
+
+      myLayer.addData(geojsonFeature);
+      // zoom the map to the layer
+      mymap.fitBounds(myLayer.getBounds());
+    };
+
+    // remove all markers
+    const clearMarkers = () => {
+      mymap.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          mymap.removeLayer(layer);
+        }
+      });
+    };
+
+    return { drawPolyLine };
   },
 };
 </script>

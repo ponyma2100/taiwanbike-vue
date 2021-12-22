@@ -34,6 +34,7 @@
           class="list-group-item"
           v-for="route in bikeShape"
           :key="route.RouteName"
+          @click="handlePolyLine(route)"
         >
           <div class="bike-info">
             <div class="bike-info-name">
@@ -64,7 +65,7 @@ import getBike from ".././composables/getBike";
 import { watch } from "@vue/runtime-core";
 
 export default {
-  setup() {
+  setup(props, { emit }) {
     const { getBikeShape, bikeShape } = getBike();
     const selected = ref("Taipei");
     getBikeShape(selected.value);
@@ -75,7 +76,12 @@ export default {
         await getBikeShape(selected.value);
       }
     );
-    return { cityName, selected, bikeShape };
+
+    const handlePolyLine = (data) => {
+      emit("polyLine", data);
+    };
+
+    return { cityName, selected, bikeShape, handlePolyLine };
   },
 };
 </script>

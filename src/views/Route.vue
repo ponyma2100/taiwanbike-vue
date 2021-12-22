@@ -2,7 +2,6 @@
   <div class="route">
     <Navbar @selectCity="loadCity" />
     <RouteMap :selectedCity="selectedCity" />
-    <Sidebar />
   </div>
 </template>
 
@@ -10,10 +9,9 @@
 import { ref } from "@vue/reactivity";
 import Navbar from "../components/Navbar.vue";
 import RouteMap from "../components/RouteMap.vue";
-import Sidebar from "../components/Sidebar.vue";
 
 export default {
-  components: { Navbar, RouteMap, Sidebar },
+  components: { Navbar, RouteMap },
   setup() {
     const selectedCity = ref("Taipei");
     const loadCity = (city) => {
