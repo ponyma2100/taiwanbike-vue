@@ -40,13 +40,12 @@ export default {
 nav {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
-  padding: 20px;
-  position: relative;
+  height: 100%;
 }
 .navbar {
-  height: 80px;
-  border: 1px solid black;
+  height: 4rem;
+  border: 1px solid #2c3e50;
+  padding: 0 10px;
 }
 select {
   height: 30px;

@@ -32,7 +32,9 @@
       </div>
     </div>
     <div class="bikeroute">
-      <h4>地區內的自行車道 :</h4>
+      <div class="text">
+        <h4>地區內的自行車道 :</h4>
+      </div>
       <ul class="list-group">
         <li
           class="list-group-item"
@@ -118,13 +120,13 @@ export default {
 <style scopde>
 .sidebar {
   width: 25vw;
-  height: 90vh;
+  height: 93vh;
   min-width: 300px;
-  max-height: 90vh;
+  max-height: 93vh;
   overflow-y: scroll;
   background: #ffffff;
   position: absolute;
-  top: 80px;
+  top: 66px;
   z-index: 999;
 }
 .selector {
@@ -139,7 +141,7 @@ export default {
   background: #ffffff;
   letter-spacing: 0.04em;
   color: #7d7d7d;
-  border: 1px solid black;
+  border: 1px solid #2c3e50;
   z-index: 999;
 }
 .citySelector,
@@ -156,10 +158,6 @@ export default {
   width: 80px;
   color: #07b041;
 }
-ul {
-  position: absolute;
-  top: 130px;
-}
 
 ul > li {
   width: 460px;
@@ -171,10 +169,16 @@ ul > li:hover {
   cursor: pointer;
 }
 
-.bikeroute > h4 {
+.bikeroute {
+  width: 100%;
   position: absolute;
-  top: 100px;
-  padding: 5px 40px;
+  top: 10vh;
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
 }
 
 .list-group-item {

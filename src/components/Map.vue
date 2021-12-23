@@ -133,7 +133,7 @@ export default {
 
 <style>
 #map {
-  height: 90vh;
+  height: 93vh;
   z-index: 10;
 }
 </style>
