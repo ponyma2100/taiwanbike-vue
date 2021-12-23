@@ -83,12 +83,6 @@ export default {
         await getBikeShape(citySelected.value);
       }
     );
-    watch(
-      () => directionSelected.value,
-      () => {
-        console.log("directionSelected", directionSelected.value);
-      }
-    );
 
     //  filter route direction
     const filterRoute = computed(() => {

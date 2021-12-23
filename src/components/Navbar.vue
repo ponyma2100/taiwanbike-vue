@@ -1,12 +1,14 @@
 <template>
   <div class="navbar">
     <nav>
-      <div class="logo"><img src="../assets/twlogo.png" alt="" /></div>
+      <router-link :to="{ name: 'Home' }">
+        <div class="logo"><img src="../assets/twlogo.png" alt="" /></div>
+      </router-link>
       <div class="links">
         <router-link :to="{ name: 'Home' }">尋找Bike</router-link>
         <router-link :to="{ name: 'Route' }">車道查詢</router-link>
       </div>
-      <div class="select">
+      <div class="select" v-if="$route.name === 'Home'">
         <select v-model="selected" @click="changeItem" @change="handleChange">
           <option v-for="city in cityMapping" :key="city" :value="city.engName">
             {{ city.chtName }}
@@ -38,8 +40,9 @@ export default {
 nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   padding: 20px;
+  position: relative;
 }
 .navbar {
   height: 80px;
@@ -54,7 +57,7 @@ select {
   box-sizing: border-box;
 }
 
-a.router-link-active {
+.links > a.router-link-active {
   background: #022020;
   color: #ffffff;
   border-radius: 4px;
@@ -63,8 +66,13 @@ a.router-link-active {
   display: flex;
   justify-content: space-evenly;
   width: 300px;
+  position: absolute;
+  left: 45%;
 }
 nav a {
   padding: 5px;
+}
+.select {
+  margin-left: auto;
 }
 </style>
